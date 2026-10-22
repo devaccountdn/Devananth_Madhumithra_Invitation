@@ -1,0 +1,77 @@
+:root {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  color: #713827;
+  background: #fff8eb;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-optical-sizing: auto;
+  font-weight: 400;
+
+  --ink: #713827;
+  --leaf: #397451;
+  --vermilion: #963e2b;
+  --saffron: #e7ae32;
+  --lotus: #d87472;
+  --paper: #fbf8e8;
+  --jasmine: #fffdf6;
+  --line: rgba(21, 62, 55, 0.2);
+  --serif: "Cormorant Garamond", Georgia, serif;
+  --tamil: "Noto Serif Tamil", serif;
+  --script: "Great Vibes", cursive;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  scroll-behavior: smooth;
+  scroll-padding-top: 24px;
+}
+
+body {
+  min-width: 320px;
+  margin: 0;
+}
+
+body,
+button,
+a {
+  font-family: "Cormorant Garamond", Georgia, serif;
+}
+
+button,
+a {
+  color: inherit;
+}
+
+a {
+  text-decoration: none;
+}
+
+button:focus-visible,
+a:focus-visible,
+summary:focus-visible {
+  outline: 3px solid #c28e38;
+  outline-offset: 4px;
+  box-shadow: 0 0 0 6px var(--paper);
+}
+
+::selection {
+  color: var(--jasmine);
+  background: var(--vermilion);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
