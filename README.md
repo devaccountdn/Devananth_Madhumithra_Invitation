@@ -53,3 +53,12 @@ The invitation arch uses the supplied `public/images/lord-ganesha.png` above the
 - `src/App.tsx` contains the invitation content, supplied image paths, and scroll-progress behavior.
 - `src/App.css` contains page layout, responsive rules, and visual animation.
 - `src/index.css` contains palette, typography, and global accessibility styles.
+
+## Deploying to GitHub Pages
+
+The site is published at https://devaccountdn.github.io/Devananth_Madhumithra_Invitation/.
+
+- `vite.config.ts` sets `base: '/Devananth_Madhumithra_Invitation/'`; image paths in `src/App.tsx` use `import.meta.env.BASE_URL`. Update both if the repository is renamed.
+- `.github/workflows/deploy.yml` runs `npm ci`, lint, and build on every push to `main` (or a manual run), then publishes `dist/`.
+- One-time setup: in the repository's **Settings → Pages**, set **Source** to **GitHub Actions**.
+- Check locally with `npm run build && npm run preview`, then open `http://localhost:4173/Devananth_Madhumithra_Invitation/`.

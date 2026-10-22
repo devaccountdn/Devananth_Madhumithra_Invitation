@@ -43,17 +43,17 @@ const menus = [
   {
     label: "Reception Dinner",
     date: events[0].date,
-    image: "/images/menu-reception-dinner.jpeg",
+    image: `${import.meta.env.BASE_URL}images/menu-reception-dinner.jpeg`,
   },
   {
     label: "Morning Tiffin",
     date: events[1].date,
-    image: "/images/menu-morning-tiffin.jpeg",
+    image: `${import.meta.env.BASE_URL}images/menu-morning-tiffin.jpeg`,
   },
   {
     label: "Afternoon Lunch",
     date: events[1].date,
-    image: "/images/menu-afternoon-lunch.jpeg",
+    image: `${import.meta.env.BASE_URL}images/menu-afternoon-lunch.jpeg`,
   },
 ] as const;
 const calendarEvents = events.map((event) => {
@@ -123,9 +123,9 @@ const calendarContent =
     .join("\r\n") + "\r\n";
 const calendarUrl = `data:text/calendar;charset=utf-8,${encodeURIComponent(calendarContent)}`;
 const invitationImages = {
-  gopuram: "/images/gopuram-smooth.jpg",
-  trees: "/images/temple-trees-smooth.jpg",
-  courtyard: "/images/temple-courtyard-smooth.jpg",
+  gopuram: `${import.meta.env.BASE_URL}images/gopuram-smooth.jpg`,
+  trees: `${import.meta.env.BASE_URL}images/temple-trees-smooth.jpg`,
+  courtyard: `${import.meta.env.BASE_URL}images/temple-courtyard-smooth.jpg`,
 };
 
 function TemplePhoto({
@@ -722,7 +722,7 @@ function App() {
               <div className="arch-copy">
                 <img
                   className="vinayagar-mark"
-                  src="/images/lord-ganesha.png"
+                  src={`${import.meta.env.BASE_URL}images/lord-ganesha.png`}
                   width={768}
                   height={768}
                   alt="Lord Vinayagar"
