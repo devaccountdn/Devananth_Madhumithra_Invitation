@@ -22,9 +22,9 @@ const mapUrl = "https://maps.app.goo.gl/nuSJ6EEz5AziMPAh7?g_st=ac";
 const momentsUrl =
   "https://drive.google.com/drive/folders/1h-dEobLTfJZogxuFtfpf32s8pX6D6Mn5";
 const invitationQuotes = {
-  opening:
-    "We’re finally tying the knot and we want you there to witness it.",
-  dates: "We arrived as two stories, and found a lifetime waiting between the lines.",
+  opening: "We’re finally tying the knot and we want you there to witness it.",
+  dates:
+    "We arrived as two stories, and found a lifetime waiting between the lines.",
   celebration: "Before we knew each other, our story had already begun.",
   memories: {
     lines: [
@@ -313,7 +313,7 @@ function ScratchDate() {
         samples++;
       }
     }
-    if (cleared / samples >= 0.4) {
+    if (cleared / samples >= 0.55) {
       pointerRef.current = null;
       if (canvas.hasPointerCapture(event.pointerId))
         canvas.releasePointerCapture(event.pointerId);
@@ -448,17 +448,14 @@ function CalendarActions() {
             </p>
           </div>
         </details>
-        <a
-          className="calendar-link calendar-link-secondary"
-          href={calendarUrl}
-        >
+        <a className="calendar-link calendar-link-secondary" href={calendarUrl}>
           <CalendarPlus size={17} aria-hidden="true" />
           <span>Add both dates to Apple Calendar</span>
         </a>
       </div>
       <p className="calendar-reminders">
-        In Safari, open the calendar file and confirm Add All.
-        If it downloads, open the downloaded .ics file to import both dates.
+        In Safari, open the calendar file and confirm Add All. If it downloads,
+        open the downloaded .ics file to import both dates.
         <br />
         Apple alerts: 1 day and 2 hours before each event.
         <br />
@@ -655,10 +652,9 @@ function MenuGallery() {
               </div>
             </div>
             <p className="menu-viewer-help">
-              Pinch with two fingers or use + / - to zoom. Swipe with one
-              finger or drag the image to explore. You can also use the arrow
-              keys or scrollbars.
-              Press Escape to close.
+              Pinch with two fingers or use + / - to zoom. Swipe with one finger
+              or drag the image to explore. You can also use the arrow keys or
+              scrollbars. Press Escape to close.
             </p>
             <div
               className={`menu-zoom-viewport${zoom > 1 ? " is-zoomed" : ""}`}
@@ -683,15 +679,21 @@ function MenuGallery() {
                   const viewport = event.currentTarget;
                   const rect = viewport.getBoundingClientRect();
                   pinchRef.current = {
-                    distance: Math.max(1, Math.hypot(
-                      second.x - first.x,
-                      second.y - first.y,
-                    )),
+                    distance: Math.max(
+                      1,
+                      Math.hypot(second.x - first.x, second.y - first.y),
+                    ),
                     zoom: zoomRef.current,
-                    contentX: viewport.scrollLeft +
-                      (first.x + second.x) / 2 - rect.left - viewport.clientLeft,
-                    contentY: viewport.scrollTop +
-                      (first.y + second.y) / 2 - rect.top - viewport.clientTop,
+                    contentX:
+                      viewport.scrollLeft +
+                      (first.x + second.x) / 2 -
+                      rect.left -
+                      viewport.clientLeft,
+                    contentY:
+                      viewport.scrollTop +
+                      (first.y + second.y) / 2 -
+                      rect.top -
+                      viewport.clientTop,
                   };
                 }
               }}
@@ -710,16 +712,23 @@ function MenuGallery() {
                     second.x - first.x,
                     second.y - first.y,
                   );
-                  const next = Math.min(3, Math.max(
-                    1, pinch.zoom * distance / pinch.distance,
-                  ));
+                  const next = Math.min(
+                    3,
+                    Math.max(1, (pinch.zoom * distance) / pinch.distance),
+                  );
                   const ratio = next / pinch.zoom;
                   const rect = viewport.getBoundingClientRect();
                   const scroll = {
-                    left: pinch.contentX * ratio -
-                      ((first.x + second.x) / 2 - rect.left - viewport.clientLeft),
-                    top: pinch.contentY * ratio -
-                      ((first.y + second.y) / 2 - rect.top - viewport.clientTop),
+                    left:
+                      pinch.contentX * ratio -
+                      ((first.x + second.x) / 2 -
+                        rect.left -
+                        viewport.clientLeft),
+                    top:
+                      pinch.contentY * ratio -
+                      ((first.y + second.y) / 2 -
+                        rect.top -
+                        viewport.clientTop),
                   };
                   pendingScrollRef.current = scroll;
                   viewport.scrollLeft = scroll.left;
