@@ -1,0 +1,45 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Devananth and Madhumithra//Wedding Invitation//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:devananth-madhumitha-reception-202611@example.invalid
+DTSTAMP:20261009T000000Z
+DTSTART:20261115T133000Z
+DTEND:20261115T163000Z
+SUMMARY:S. Devananth & A. Madhumithra — Reception
+LOCATION:Ananda Thirumana Maligai\, Chrompet\, Chennai 600044\, opposite C
+ hrompet Railway Station
+URL:https://maps.app.goo.gl/nuSJ6EEz5AziMPAh7?g_st=ac
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:S. Devananth & A. Madhumithra — Reception is tomorrow.
+END:VALARM
+BEGIN:VALARM
+TRIGGER:-PT2H
+ACTION:DISPLAY
+DESCRIPTION:S. Devananth & A. Madhumithra — Reception begins in 2 hours.
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:devananth-madhumitha-wedding-202611@example.invalid
+DTSTAMP:20261009T000000Z
+DTSTART:20261116T003000Z
+DTEND:20261116T020000Z
+SUMMARY:S. Devananth & A. Madhumithra — Wedding
+LOCATION:Ananda Thirumana Maligai\, Chrompet\, Chennai 600044\, opposite C
+ hrompet Railway Station
+URL:https://maps.app.goo.gl/nuSJ6EEz5AziMPAh7?g_st=ac
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:S. Devananth & A. Madhumithra — Wedding is tomorrow.
+END:VALARM
+BEGIN:VALARM
+TRIGGER:-PT2H
+ACTION:DISPLAY
+DESCRIPTION:S. Devananth & A. Madhumithra — Wedding begins in 2 hours.
+END:VALARM
+END:VEVENT
+END:VCALENDAR
