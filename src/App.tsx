@@ -22,10 +22,10 @@ const mapUrl = "https://maps.app.goo.gl/nuSJ6EEz5AziMPAh7?g_st=ac";
 const momentsUrl =
   "https://drive.google.com/drive/folders/1h-dEobLTfJZogxuFtfpf32s8pX6D6Mn5";
 const invitationQuotes = {
-  opening: "Before we knew each other, our story had already begun.",
+  opening:
+    "We’re finally tying the knot and we want you there to witness it.",
   dates: "We arrived as two stories, and found a lifetime waiting between the lines.",
-  celebration:
-    "Our families brought us together; the love we build will make us a home.",
+  celebration: "Before we knew each other, our story had already begun.",
   memories: {
     lines: [
       "Love alters not with his brief hours and weeks,",
@@ -863,7 +863,10 @@ function App() {
                 />
                 <figure className="arch-quote">
                   <blockquote>
-                    <p>&ldquo;{invitationQuotes.opening}&rdquo;</p>
+                    <p>
+                      &ldquo;<strong>Shit just got real.</strong>{" "}
+                      {invitationQuotes.opening}&rdquo;
+                    </p>
                   </blockquote>
                 </figure>
                 <p>With the blessings of our families</p>

@@ -275,10 +275,18 @@ main {
   color: #542b20;
 }
 
+.arch-quote blockquote,
+.section-quote,
+.closing-quote blockquote {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 600;
+  letter-spacing: 0.015em;
+}
+
 .arch-quote blockquote {
   margin: 0;
   font-size: clamp(13px, 1.5vw, 18px);
-  font-style: italic;
   line-height: 1.4;
 }
 
@@ -291,7 +299,6 @@ main {
   margin: 0 auto 24px;
   color: #542b20;
   font-size: clamp(16px, 1.6vw, 20px);
-  font-style: italic;
   line-height: 1.5;
   text-align: center;
 }
