@@ -78,7 +78,7 @@ main {
 .temple-journey {
   position: relative;
   height: 290svh;
-  background: #70b2de;
+  background: var(--paper);
   --temple-y: 0svh;
   --temple-scale: 1;
   --title-opacity: 1;
@@ -89,7 +89,7 @@ main {
 .temple-stage {
   position: sticky;
   top: 0;
-  height: 100svh;
+  height: 100dvh;
   min-height: 560px;
   overflow: hidden;
   isolation: isolate;
@@ -212,7 +212,7 @@ main {
 .invitation-arch {
   position: relative;
   width: 100%;
-  height: 100svh;
+  height: 100%;
   min-height: 510px;
   overflow: hidden;
   border-top: 3px solid #d1b17a;
@@ -222,7 +222,7 @@ main {
 .invitation-arch::after {
   position: absolute;
   inset: 0;
-  background: linear-gradient(#fbf8e8e8, #eee0c5ed);
+  background: linear-gradient(#fbf8e899, #fbf8e866 55%, #eee0c599);
   pointer-events: none;
   content: "";
 }
@@ -254,7 +254,8 @@ main {
   border-radius: 46% 46% 4px 4px / 13% 13% 4px 4px;
   outline: 1px solid #e2c995;
   outline-offset: 5px;
-  background: var(--paper);
+  color: #542b20;
+  background: #fbf8e8e6;
   box-shadow: 0 10px 45px #806c3920;
   text-align: center;
   transform: translateX(-50%);
@@ -268,6 +269,45 @@ main {
   object-fit: contain;
 }
 
+.arch-quote {
+  width: min(100%, 440px);
+  margin: 0;
+  color: #542b20;
+}
+
+.arch-quote blockquote {
+  margin: 0;
+  font-size: clamp(13px, 1.5vw, 18px);
+  font-style: italic;
+  line-height: 1.4;
+}
+
+.arch-quote p {
+  margin: 0;
+}
+
+.section-quote {
+  width: min(100%, 520px);
+  margin: 0 auto 24px;
+  color: #542b20;
+  font-size: clamp(16px, 1.6vw, 20px);
+  font-style: italic;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.section-quote blockquote,
+.section-quote p {
+  margin: 0;
+}
+
+.section-quote figcaption {
+  margin-top: 5px;
+  font-size: 12px;
+  font-style: normal;
+  line-height: 1.4;
+}
+
 .arch-copy > p {
   margin: 0;
   font-size: clamp(14px, 1.4vw, 17px);
@@ -276,7 +316,7 @@ main {
 
 .arch-copy h2 {
   margin: 0;
-  color: #497f98;
+  color: #28566a;
   font-family: var(--script);
   font-size: clamp(39px, 5vw, 63px);
   font-weight: 400;
@@ -285,7 +325,7 @@ main {
 
 .arch-copy .arch-names {
   margin: 8px 0;
-  color: #8a632e;
+  color: #66451e;
   font-family: var(--script);
   font-size: clamp(29px, 3.2vw, 44px);
   font-weight: 400;
@@ -295,18 +335,10 @@ main {
 .arch-names span {
   display: block;
   margin: 2px 0;
-  color: #56776c;
+  color: #35564a;
   font-family: var(--serif);
   font-size: 21px;
   font-style: italic;
-}
-
-.arch-divider {
-  width: 70%;
-  color: #bd995b;
-  line-height: .1;
-  border-inline: 60px solid #bd995b66;
-  margin-block: 6px;
 }
 
 .scroll-cue {
@@ -764,7 +796,6 @@ main {
   display: grid;
   width: 100%;
   min-height: 170px;
-  aspect-ratio: 12 / 5;
   overflow: hidden;
   border: 1px solid #b58b4c;
   border-radius: 12px;
@@ -789,6 +820,16 @@ main {
 
 .scratch-event + .scratch-event {
   border-left: 1px solid #b58b4c;
+}
+
+.scratch-event-image {
+  display: block;
+  width: clamp(48px, 12vw, 64px);
+  height: clamp(48px, 12vw, 64px);
+  flex-shrink: 0;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+  mask-image: radial-gradient(ellipse, #000 55%, transparent 100%);
 }
 
 .scratch-date strong {
@@ -1216,6 +1257,7 @@ main {
 }
 
 .menu-zoom-viewport {
+  touch-action: none;
   max-height: 65svh;
   overflow: auto;
   overscroll-behavior: contain;
@@ -1224,6 +1266,16 @@ main {
 .menu-zoom-viewport:focus-visible {
   outline: 3px solid #c28e38;
   outline-offset: -3px;
+}
+
+.menu-zoom-viewport.is-zoomed {
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.menu-zoom-viewport.is-zoomed:active {
+  cursor: grabbing;
 }
 
 .menu-zoom-viewport img {
@@ -1837,7 +1889,7 @@ main {
   }
 
   .invitation-arch {
-    height: 100svh;
+    height: 100%;
     min-height: 510px;
   }
 

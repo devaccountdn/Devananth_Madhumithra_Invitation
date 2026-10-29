@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { CSSProperties, PointerEvent as ReactPointerEvent } from "react";
 import {
   ArrowDown,
@@ -18,9 +18,23 @@ import "./App.css";
 
 const venue =
   "Ananda Thirumana Maligai, Chrompet, Chennai 600044, opposite Chrompet Railway Station";
-const mapUrl = "https://share.google/DFv4etFwRdy31rJhd";
+const mapUrl = "https://maps.app.goo.gl/nuSJ6EEz5AziMPAh7?g_st=ac";
 const momentsUrl =
   "https://drive.google.com/drive/folders/1h-dEobLTfJZogxuFtfpf32s8pX6D6Mn5";
+const invitationQuotes = {
+  opening: "Before we knew each other, our story had already begun.",
+  dates: "We arrived as two stories, and found a lifetime waiting between the lines.",
+  celebration:
+    "Our families brought us together; the love we build will make us a home.",
+  memories: {
+    lines: [
+      "Love alters not with his brief hours and weeks,",
+      "But bears it out even to the edge of doom.",
+    ],
+    author: "William Shakespeare",
+    work: "Sonnet 116",
+  },
+};
 const events = [
   {
     id: "reception",
@@ -29,6 +43,7 @@ const events = [
     end: "20261115T163000Z",
     date: "Sunday, 15 November 2026",
     time: "7:00 p.m. onwards",
+    image: `${import.meta.env.BASE_URL}images/scratch-reception.png`,
   },
   {
     id: "wedding",
@@ -37,6 +52,7 @@ const events = [
     end: "20261116T020000Z",
     date: "Monday, 16 November 2026",
     time: "6:00 a.m. – 7:30 a.m.",
+    image: `${import.meta.env.BASE_URL}images/scratch-wedding.png`,
   },
 ] as const;
 const menus = [
@@ -78,7 +94,7 @@ const escapeCalendar = (value: string) =>
     .replace(/\n/g, "\\n")
     .replace(/,/g, "\\,")
     .replace(/;/g, "\\;");
-const calendarContent =
+export const calendarContent =
   [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
@@ -121,11 +137,12 @@ const calendarContent =
       return folded.join("\r\n");
     })
     .join("\r\n") + "\r\n";
-const calendarUrl = `data:text/calendar;charset=utf-8,${encodeURIComponent(calendarContent)}`;
+const calendarUrl = `${import.meta.env.BASE_URL}devananth-madhumithra-wedding.ics`;
 const invitationImages = {
   gopuram: `${import.meta.env.BASE_URL}images/gopuram-smooth.jpg`,
   trees: `${import.meta.env.BASE_URL}images/temple-trees-smooth.jpg`,
   courtyard: `${import.meta.env.BASE_URL}images/temple-courtyard-smooth.jpg`,
+  couple: `${import.meta.env.BASE_URL}images/wedding-couple.png`,
 };
 
 function TemplePhoto({
@@ -321,6 +338,13 @@ function ScratchDate() {
           {events.map((event) => (
             <div className="scratch-event" key={event.id}>
               <span className="scratch-event-label">{event.label}</span>
+              <img
+                className="scratch-event-image"
+                src={event.image}
+                width={64}
+                height={64}
+                alt=""
+              />
               <strong>{event.date}</strong>
               <span className="scratch-event-time">
                 <Clock3 size={14} aria-hidden="true" />
@@ -427,13 +451,15 @@ function CalendarActions() {
         <a
           className="calendar-link calendar-link-secondary"
           href={calendarUrl}
-          download="devananth-madhumithra-wedding.ics"
         >
           <CalendarPlus size={17} aria-hidden="true" />
           <span>Add both dates to Apple Calendar</span>
         </a>
       </div>
       <p className="calendar-reminders">
+        In Safari, open the calendar file and confirm Add All.
+        If it downloads, open the downloaded .ics file to import both dates.
+        <br />
         Apple alerts: 1 day and 2 hours before each event.
         <br />
         Google Calendar uses your saved reminder settings.
@@ -447,19 +473,57 @@ function CalendarActions() {
 function MenuGallery() {
   const trackRef = useRef<HTMLDivElement>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const pointersRef = useRef(new Map<number, { x: number; y: number }>());
+  const pinchRef = useRef<{
+    distance: number;
+    zoom: number;
+    contentX: number;
+    contentY: number;
+  } | null>(null);
+  const pendingScrollRef = useRef<{ left: number; top: number } | null>(null);
+  const zoomRef = useRef(1);
   const [active, setActive] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
   const [zoom, setZoom] = useState(1);
   const menu = selected === null ? null : menus[selected];
 
+  const changeZoom = (value: number) => {
+    const next = Math.min(3, Math.max(1, value));
+    zoomRef.current = next;
+    setZoom(next);
+  };
+
+  useLayoutEffect(() => {
+    const viewport = viewportRef.current;
+    const scroll = pendingScrollRef.current;
+    if (viewport && scroll) {
+      viewport.scrollLeft = scroll.left;
+      viewport.scrollTop = scroll.top;
+    }
+    pendingScrollRef.current = null;
+  }, [zoom]);
+
+  const finishGesture = (event: ReactPointerEvent<HTMLDivElement>) => {
+    pointersRef.current.delete(event.pointerId);
+    pinchRef.current = null;
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
+  };
+
   useEffect(() => {
     if (selected === null) return;
     const dialog = dialogRef.current;
     if (!dialog) return;
+    const pointers = pointersRef.current;
     dialog.showModal();
     const overflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     return () => {
+      pointers.clear();
+      pinchRef.current = null;
+      pendingScrollRef.current = null;
       dialog.close();
       document.body.style.overflow = overflow;
     };
@@ -508,7 +572,7 @@ function MenuGallery() {
               aria-label={`Enlarge ${item.label.toLowerCase()} menu`}
               aria-haspopup="dialog"
               onClick={() => {
-                setZoom(1);
+                changeZoom(1);
                 setSelected(index);
               }}
             >
@@ -568,16 +632,16 @@ function MenuGallery() {
                   type="button"
                   aria-label="Zoom out"
                   disabled={zoom === 1}
-                  onClick={() => setZoom(zoom - 0.5)}
+                  onClick={() => changeZoom(zoom - 0.5)}
                 >
                   <ZoomOut size={20} aria-hidden="true" />
                 </button>
-                <span aria-live="polite">{zoom * 100}%</span>
+                <span aria-live="polite">{Math.round(zoom * 100)}%</span>
                 <button
                   type="button"
                   aria-label="Zoom in"
                   disabled={zoom === 3}
-                  onClick={() => setZoom(zoom + 0.5)}
+                  onClick={() => changeZoom(zoom + 0.5)}
                 >
                   <ZoomIn size={20} aria-hidden="true" />
                 </button>
@@ -591,17 +655,87 @@ function MenuGallery() {
               </div>
             </div>
             <p className="menu-viewer-help">
-              Use + / - to zoom, then scroll or drag the scrollbars to explore.
+              Pinch with two fingers or use + / - to zoom. Swipe with one
+              finger or drag the image to explore. You can also use the arrow
+              keys or scrollbars.
               Press Escape to close.
             </p>
             <div
-              className="menu-zoom-viewport"
+              className={`menu-zoom-viewport${zoom > 1 ? " is-zoomed" : ""}`}
+              ref={viewportRef}
               key={selected}
               tabIndex={0}
               role="region"
               aria-label="Zoomed menu image"
+              onPointerDown={(event) => {
+                if (
+                  (event.pointerType === "mouse" && event.button !== 0) ||
+                  pointersRef.current.size >= 2
+                )
+                  return;
+                event.currentTarget.setPointerCapture(event.pointerId);
+                pointersRef.current.set(event.pointerId, {
+                  x: event.clientX,
+                  y: event.clientY,
+                });
+                const [first, second] = [...pointersRef.current.values()];
+                if (first && second) {
+                  const viewport = event.currentTarget;
+                  const rect = viewport.getBoundingClientRect();
+                  pinchRef.current = {
+                    distance: Math.max(1, Math.hypot(
+                      second.x - first.x,
+                      second.y - first.y,
+                    )),
+                    zoom: zoomRef.current,
+                    contentX: viewport.scrollLeft +
+                      (first.x + second.x) / 2 - rect.left - viewport.clientLeft,
+                    contentY: viewport.scrollTop +
+                      (first.y + second.y) / 2 - rect.top - viewport.clientTop,
+                  };
+                }
+              }}
+              onPointerMove={(event) => {
+                const previous = pointersRef.current.get(event.pointerId);
+                if (!previous) return;
+                pointersRef.current.set(event.pointerId, {
+                  x: event.clientX,
+                  y: event.clientY,
+                });
+                const viewport = event.currentTarget;
+                const [first, second] = [...pointersRef.current.values()];
+                const pinch = pinchRef.current;
+                if (first && second && pinch) {
+                  const distance = Math.hypot(
+                    second.x - first.x,
+                    second.y - first.y,
+                  );
+                  const next = Math.min(3, Math.max(
+                    1, pinch.zoom * distance / pinch.distance,
+                  ));
+                  const ratio = next / pinch.zoom;
+                  const rect = viewport.getBoundingClientRect();
+                  const scroll = {
+                    left: pinch.contentX * ratio -
+                      ((first.x + second.x) / 2 - rect.left - viewport.clientLeft),
+                    top: pinch.contentY * ratio -
+                      ((first.y + second.y) / 2 - rect.top - viewport.clientTop),
+                  };
+                  pendingScrollRef.current = scroll;
+                  viewport.scrollLeft = scroll.left;
+                  viewport.scrollTop = scroll.top;
+                  changeZoom(next);
+                } else {
+                  viewport.scrollLeft += previous.x - event.clientX;
+                  viewport.scrollTop += previous.y - event.clientY;
+                }
+              }}
+              onPointerUp={finishGesture}
+              onPointerCancel={finishGesture}
+              onLostPointerCapture={finishGesture}
             >
               <img
+                draggable={false}
                 src={menu.image}
                 alt={`${menu.label} banana-leaf menu by Sindhu Catering, with labeled dishes`}
                 style={{ width: `${zoom * 100}%` }}
@@ -714,9 +848,9 @@ function App() {
             <div className="invitation-arch">
               <img
                 className="temple-arch"
-                src={invitationImages.courtyard}
-                width={2160}
-                height={1440}
+                src={invitationImages.couple}
+                width={768}
+                height={1049}
                 alt=""
               />
               <div className="arch-copy">
@@ -727,6 +861,11 @@ function App() {
                   height={768}
                   alt="Lord Vinayagar"
                 />
+                <figure className="arch-quote">
+                  <blockquote>
+                    <p>&ldquo;{invitationQuotes.opening}&rdquo;</p>
+                  </blockquote>
+                </figure>
                 <p>With the blessings of our families</p>
                 <h2>We invite you</h2>
                 <p>
@@ -737,9 +876,6 @@ function App() {
                 <p className="arch-names">
                   S. Devananth <span>&</span> A. Madhumithra
                 </p>
-                <div className="arch-divider" aria-hidden="true">
-                  ✦
-                </div>
                 <p>
                   A match woven by family, a story destined by fate.
                   <br />
@@ -768,6 +904,9 @@ function App() {
         <h2 id="date-discovery-title">
           Discover our <i>special day.</i>
         </h2>
+        <blockquote className="section-quote">
+          <p>&ldquo;{invitationQuotes.dates}&rdquo;</p>
+        </blockquote>
         <div className="date-discovery-panel">
           <ScratchDate />
         </div>
@@ -814,6 +953,9 @@ function App() {
             </div>
           </div>
 
+          <blockquote className="section-quote">
+            <p>&ldquo;{invitationQuotes.celebration}&rdquo;</p>
+          </blockquote>
           <div className="reception-reveal">
             <div className="event-details">
               <div className="venue-block">
@@ -875,6 +1017,19 @@ function App() {
               <br />
               <i>Forever memories.</i>
             </h2>
+            <figure className="section-quote">
+              <blockquote>
+                <p>
+                  &ldquo;{invitationQuotes.memories.lines[0]}
+                  <br />
+                  {invitationQuotes.memories.lines[1]}&rdquo;
+                </p>
+              </blockquote>
+              <figcaption>
+                {invitationQuotes.memories.author},{" "}
+                <cite>{invitationQuotes.memories.work}</cite>
+              </figcaption>
+            </figure>
             <p>
               The happy tears, the laughter, the little in-between moments. If
               you capture a piece of our celebration, we would love to see it.
