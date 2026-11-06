@@ -891,7 +891,7 @@ function App() {
                 <p>
                   A match woven by family, a story destined by fate.
                   <br />
-                  Join us to watch as our destiny unfolds.
+                  Join us to watch as our destiny unfolds!
                 </p>
                 <a className="text-link" href="#discover-date">
                   Join our celebration{" "}
@@ -1062,7 +1062,7 @@ function App() {
             <p className="moments-note">
               Opens Google Drive in a new tab. You may need to sign in. Please
               share only moments you are comfortable sharing with the couple and
-              other folder members.
+              others.
             </p>
           </div>
           <div className="moments-qr-panel">
