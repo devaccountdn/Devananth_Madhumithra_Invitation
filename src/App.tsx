@@ -878,7 +878,6 @@ function App() {
                     </p>
                   </blockquote>
                 </figure>
-                <br />
                 <p>With the blessings of our families</p>
                 <h2>We invite you</h2>
                 <p>
