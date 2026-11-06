@@ -22,7 +22,7 @@ const mapUrl = "https://maps.app.goo.gl/nuSJ6EEz5AziMPAh7?g_st=ac";
 const momentsUrl =
   "https://drive.google.com/drive/folders/1h-dEobLTfJZogxuFtfpf32s8pX6D6Mn5";
 const invitationQuotes = {
-  opening: "The Auspicious begining of a beautiful forever starts here.",
+  opening: "An auspicious begining of a beautiful forever starts here.",
   dates:
     "We arrived as two stories, and found a lifetime waiting between the lines.",
   celebration: "Before we knew each other, our story had already begun.",
