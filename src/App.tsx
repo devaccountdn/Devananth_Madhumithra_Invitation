@@ -22,7 +22,7 @@ const mapUrl = "https://maps.app.goo.gl/nuSJ6EEz5AziMPAh7?g_st=ac";
 const momentsUrl =
   "https://drive.google.com/drive/folders/1h-dEobLTfJZogxuFtfpf32s8pX6D6Mn5";
 const invitationQuotes = {
-  opening: "We’re finally tying the knot and we want you there to witness it.",
+  opening: "The Auspicious begining of a beautiful forever starts here.",
   dates:
     "We arrived as two stories, and found a lifetime waiting between the lines.",
   celebration: "Before we knew each other, our story had already begun.",
@@ -873,11 +873,12 @@ function App() {
                 <figure className="arch-quote">
                   <blockquote>
                     <p>
-                      &ldquo;<strong>Shit just got real.</strong>{" "}
+                      &ldquo;
                       {invitationQuotes.opening}&rdquo;
                     </p>
                   </blockquote>
                 </figure>
+                <br />
                 <p>With the blessings of our families</p>
                 <h2>We invite you</h2>
                 <p>
